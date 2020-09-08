@@ -62,7 +62,8 @@
         function pop_categories_color_0(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Numero della mappa</strong><br />' + (feature.properties['numero_della_mappa'] !== null ? autolinker.link(feature.properties['numero_della_mappa'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">Numero della mappa</th>\
+                        <td>' + (feature.properties['numero_della_mappa'] !== null ? autolinker.link(feature.properties['numero_della_mappa'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Subalterno</th>\
