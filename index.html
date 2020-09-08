@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/leaflet-search.css">
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet-search.js"></script>
+    <script src="data/categories_color_0.js"></script>
+    <script>
+        var map = L.map('map', {
+            zoomControl: true,
+            maxZoom: 28,
+            minZoom: 1
+        }).fitBounds([
+            [45.42928013575864, 12.320523126491105],
+            [45.44110797115566, 12.347206395462752]
+        ]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({
+            truncate: {
+                length: 30,
+                location: 'smart'
+            }
+        });
+        var bounds_group = new L.featureGroup([]);
+
+        function setBounds() {}
+
+        function pop_categories_color_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Numero della mappa</strong><br />' + (feature.properties['numero_della_mappa'] !== null ? autolinker.link(feature.properties['numero_della_mappa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Subalterno</th>\
+                        <td>' + (feature.properties['subalterno'] !== null ? autolinker.link(feature.properties['subalterno'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Toponym</th>\
+                        <td>' + (feature.properties['place'] !== null ? autolinker.link(feature.properties['place'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">House number</th>\
+                        <td>' + (feature.properties['denom_pezzi_di_terra'] !== null ? autolinker.link(feature.properties['denom_pezzi_di_terra'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Owner</th>\
+                        <td>' + (feature.properties['possessore'] !== null ? autolinker.link(feature.properties['possessore'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Function</th>\
+                        <td>' + (feature.properties['qualita'] !== null ? autolinker.link(feature.properties['qualita'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Categories</th>\
+                        <td>' + (feature.properties['categories'] !== null ? autolinker.link(feature.properties['categories'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {
+                maxHeight: 400
+            });
+        }
+
+        function style_categories_color_0_0(feature) {
+            switch (String(feature.properties['categories'])) {
+                case 'CASA, OFFICINA':
+                case 'CASA, ORTO':
+                case 'CASA, OSPIZIO':
+                case 'CASA, OSTERIA':
+                case 'CASA, PORTICO, SQUERO':
+                case 'CASA, RAFFINARIA':
+                case 'CASA, SOTTOPORTICO':
+                case 'CASA, SPAZIO':
+                case 'CASA, SQUERO':
+                case 'CASA, STALLA':
+                case 'CASA, STANZA':
+                case 'CASA, TEATRO':
+                case 'CASA, TERAZZA':
+                case 'CASA, TINTORIA':
+                case 'CASA, UFFICI':
+                case 'CASA, VOLTA':
+                case 'CASA, FABBRICA':
+                case 'CASA, FABBRICA, LOCALE':
+                case 'CASA, FABBRICA, SPAZIO':
+                case 'CASA, FORNO':
+                case 'CASA, FORNO, MAGAZZENO':
+                case 'CASA, GIARDINO':
+                case 'CASA, LOCALE':
+                case 'CASA, LOCALE, OSTERIA':
+                case 'CASA, LOCALE, RAFFINARIA':
+                case 'CASA, LOCALE, TINTORIA':
+                case 'CASA, LOCANDA':
+                case 'CASA, LOGGIA':
+                case 'CASA, LUOGO':
+                case 'CASA, LUOGO, TEATRO':
+                case 'CASA, MACELLO':
+                case 'ANDITO, CASA':
+                case 'AREA, CASA':
+                case 'APPARTAMENTO, CASA':
+                case 'APPARTAMENTO, CASA, CORTO':
+                case 'APPARTAMENTO, CASA, VOLTA':
+                case 'APPARTAMENTO, LUOGO':
+                case 'APPARTAMENTO':
+                case 'CAFFE, CASA':
+                case 'CALLE, CASA, SOTTOPORTICO':
+                case 'CARCERE, CASA':
+                case 'CASA':
+                case 'CASA, CASERMA':
+                case 'CASA, CASETTA':
+                case 'CASA, CAVANA':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(17,53,152,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'BOTTEGA':
+                case 'BOTTEGA, CAFFE':
+                case 'BOTTEGA, CAFFE, LOCALE':
+                case 'BOTTEGA, CALLE, CORTO':
+                case 'BOTTEGA, CAMERA':
+                case 'BOTTEGA, CORTO':
+                case 'BOTTEGA, CORTO, LOCALE':
+                case 'BOTTEGA, CORTO, LUOGO':
+                case 'BOTTEGA, CORTO, MAGAZZENO':
+                case 'BOTTEGA, CORTO, PALAZZO':
+                case 'BOTTEGA, FABBRICA':
+                case 'BOTTEGA, LOCALE':
+                case 'BOTTEGA, LUOGO':
+                case 'BOTTEGA, LUOGO, MAGAZZENO':
+                case 'BOTTEGA, MAGAZZENO':
+                case 'BOTTEGA, MAGAZZENO, PALAZZO':
+                case 'BOTTEGA, OFFICINA':
+                case 'BOTTEGA, PALAZZO':
+                case 'BOTTEGA, STANZA':
+                case 'BOTTEGA, VOLTA':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(154,17,66,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'CORTO':
+                case 'CORTO, FABBRICA, PORTICO':
+                case 'CORTO, FORNACE, PORTICO':
+                case 'CORTO, LOCALE':
+                case 'CORTO, LOCALE, PORTICO':
+                case 'CORTO, LOCALE, SINAGOGA':
+                case 'CORTO, LUOGO':
+                case 'CORTO, LUOGO, OSTERIA':
+                case 'CORTO, OSPIZIO':
+                case 'CORTO, OSTERIA':
+                case 'CORTO, PALAZZO':
+                case 'CORTO, PORTICO':
+                case 'CORTO, PORTICO, TAGLIAPIETRA':
+                case 'CORTO, RAFFINARIA, SOTTOPORTICO':
+                case 'CORTO, SINAGOGA':
+                case 'CORTO, SOTTOPORTICO':
+                case 'CORTO, TAGLIAPIETRA':
+                case 'ANDITO, CORTO':
+                case 'CALLE, CORTO, PORTICO':
+                case 'CASETTA, CORTO':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(0,84,39,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'FABBRICA, LOCALE, MAGAZZENO':
+                case 'FABBRICA, MAGAZZENO':
+                case 'LOCALE, MAGAZZENO':
+                case 'LOCANDA, MAGAZZENO':
+                case 'MAGAZZENO':
+                case 'MAGAZZENO, ORTO':
+                case 'MAGAZZENO, PALAZZO':
+                case 'MAGAZZENO, RAFFINARIA':
+                case 'MAGAZZENO, SOTTOPORTICO':
+                case 'MAGAZZENO, SQUERO':
+                case 'MAGAZZENO, STANZA':
+                case 'MAGAZZENO, VENDIVINO':
+                case 'CORTO, FORNO, MAGAZZENO':
+                case 'CORTO, MAGAZZENO':
+                case 'CORTO, MAGAZZENO, PORTICO':
+                case 'CORTO, MAGAZZENO, RAFFINARIA':
+                case 'CORTO, MAGAZZENO, TAGLIAPIETRA':
+                case 'ANDITO, MAGAZZENO':
+                case 'ACCESSO, MAGAZZENO':
+                case 'ANDITO, CORTO, MAGAZZENO':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(244,212,52,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'APPARTAMENTO, BOTTEGA, CASA':
+                case 'APPARTAMENTO, BOTTEGA, CASA, CORTO, MAGAZZENO':
+                case 'BOTTEGA, CASA':
+                case 'BOTTEGA, CASA, CORTO, FABBRICA':
+                case 'BOTTEGA, CASA, CORTO':
+                case 'BOTTEGA, CASA, CORTO, FORNO':
+                case 'BOTTEGA, CASA, CORTO, LOCALE':
+                case 'BOTTEGA, CASA, CORTO, LUOGO':
+                case 'BOTTEGA, CASA, CORTO, MAGAZZENO':
+                case 'BOTTEGA, CASA, CORTO, MAGAZZENO, OSTERIA':
+                case 'BOTTEGA, CASA, FORNO':
+                case 'BOTTEGA, CASA, CORTO, MAGAZZENO, PORTICO':
+                case 'BOTTEGA, CASA, LOCALE, UFFICI':
+                case 'BOTTEGA, CASA, LOCANDA':
+                case 'BOTTEGA, CASA, LUOGO':
+                case 'BOTTEGA, CASA, MAGAZZENO':
+                case 'BOTTEGA, CASA, ORTO':
+                case 'BOTTEGA, CASA, VOLTA':
+                case 'BOTTEGA, CASETTA':
+                case 'BOTTEGA, CASETTA, MAGAZZENO':
+                case 'BOTTEGA, CASOTTO':
+                case 'CAMERA, MAGAZZENO':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(130,17,98,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'CASA, CASERMA, CORTO':
+                case 'CASA, CASETTA, CORTO':
+                case 'CASA, CORTO':
+                case 'CASA, CORTO, FABBRICA':
+                case 'CASA, CORTO, FABBRICA, LOCALE':
+                case 'CASA, CORTO, FABBRICA, RAFFINARIA':
+                case 'CASA, CORTO, FABBRICA, TINTORIA':
+                case 'CASA, CORTO, FORNO':
+                case 'CASA, CORTO, GIARDINO, PORTICO':
+                case 'CASA, CORTO, LOCANDA':
+                case 'CASA, CORTO, LOGGIA':
+                case 'CASA, CORTO, LUOGO':
+                case 'CASA, CORTO, MAGAZZENO':
+                case 'CASA, CORTO, MAGAZZENO, OSTERIA':
+                case 'CASA, CORTO, MAGAZZENO, VENDIVINO':
+                case 'CASA, CORTO, ORTO':
+                case 'CASA, CORTO, OSPIZIO':
+                case 'CASA, CORTO, OSTERIA':
+                case 'CASA, CORTO, PALAZZO':
+                case 'CASA, CORTO, PORTICO':
+                case 'CASA, CORTO, RAFFINARIA':
+                case 'CASA, CORTO, SCUDERIA':
+                case 'CASA, CORTO, SOTTOPORTICO':
+                case 'CASA, CORTO, SPAZIO, SQUERO':
+                case 'CASA, CORTO, SQUERO':
+                case 'CASA, CORTO, TAGLIAPIETRA':
+                case 'CASA, CORTO, TINTORIA':
+                case 'ACCESSO, CASA, CORTO':
+                case 'ANDITO, CASA, CORTO':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(0,73,85,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                case 'ANDITO, CASA, MAGAZZENO':
+                case 'CASA, CASETTA, MAGAZZENO':
+                case 'CASA, MAGAZZENO':
+                case 'CASA, MAGAZZENO, VENDIVINO':
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(183,113,36,1.0)',
+                            interactive: true,
+                    }
+                    break;
+                default:
+                    return {
+                        pane: 'pane_categories_color_0',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(153,153,153,1.0)',
+                            interactive: true,
+                    }
+                    break;
+            }
+        }
+        map.createPane('pane_categories_color_0');
+        map.getPane('pane_categories_color_0').style.zIndex = 400;
+        map.getPane('pane_categories_color_0').style['mix-blend-mode'] = 'normal';
+        var layer_categories_color_0 = new L.geoJson(json_categories_color_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_categories_color_0',
+            layerName: 'layer_categories_color_0',
+            pane: 'pane_categories_color_0',
+            onEachFeature: pop_categories_color_0,
+            style: style_categories_color_0_0,
+        });
+        bounds_group.addLayer(layer_categories_color_0);
+        map.addLayer(layer_categories_color_0);
+        var baseMaps = {};
+        L.control.layers(baseMaps, {
+            'categories_color<br /><table><tr><td style="text-align: center;"><img src="legend/categories_color_0_Casa0.png" /></td><td>Casa</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Bottega1.png" /></td><td>Bottega</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Corto2.png" /></td><td>Corto</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Magazzeno3.png" /></td><td>Magazzeno</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Casaandbottega4.png" /></td><td>Casa and bottega</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Casaandcorto5.png" /></td><td>Casa and corto</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Casaandmagazzeno6.png" /></td><td>Casa and magazzeno</td></tr><tr><td style="text-align: center;"><img src="legend/categories_color_0_Other7.png" /></td><td>Other</td></tr></table>': layer_categories_color_0,
+        }, {
+            collapsed: false
+        }).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_categories_color_0,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'numero_della_mappa'
+        }));
+        document.getElementsByClassName('search-button')[0].className +=
+            ' fa fa-binoculars';
+    </script>
+</body>
+
+</html>
